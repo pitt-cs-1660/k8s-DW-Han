@@ -60,10 +60,10 @@ spec:
         # MYSQL_DATABASE | MYSQL_USER
         ##
         - name: MYSQL_DATABASE
-        valueFrom:
-          configMapKeyRef:
-            name: wordpress-mysql
-            key: database
+          valueFrom:
+            configMapKeyRef:
+              name: wordpress-mysql
+              key: database
 
         - name: MYSQL_USER
           valueFrom:
@@ -89,13 +89,15 @@ spec:
         ports:
         - containerPort: 3306
           name: mysql
+
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+
       ##
       # define volume mounts here, be sure to reference
       # the PVC in your container spec
       ##
-        volumeMounts:
-          - name: mysql-persistent-storage
-            mountPath: /var/lib/mysql
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
@@ -114,4 +116,3 @@ spec:
   resources:
     requests:
       storage: 1Gi
-
